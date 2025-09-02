@@ -1,0 +1,275 @@
+<!--
+  Pilotentraining One‑Page Starter
+  Single-file friendly: index.html plus two tiny companion files (manifest.json, sw.js)
+  Works online and offline (as a PWA) and serves as a hub to your tools.
+-->
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pilotentraining – Assessment & Tools</title>
+  <meta name="description" content="Assessment-Training für angehende Piloten und praktische Tools für aktive Piloten – von Laurin & Bernadette." />
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a" />
+  <!-- App Icons (replace with your own PNGs) -->
+  <link rel="icon" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#0f172a; --muted:#94a3b8; --text:#e6edf6; --accent:#3b82f6; --accent-2:#22d3ee; --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444;
+      --radius:18px; --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:linear-gradient(180deg, #0b1020 0%, #0a0f1a 100%);color:var(--text);font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header{display:flex;gap:18px;align-items:center;justify-content:space-between;padding:18px 0}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:var(--shadow)}
+    .brand h1{font-size:18px;margin:0}
+    nav{display:flex;gap:14px;flex-wrap:wrap}
+    nav a{padding:10px 14px;border:1px solid #1f2a44;border-radius:999px;color:#cbd5e1;background:#0b1327}
+    .hero{position:relative;overflow:hidden;background:radial-gradient(1200px 400px at 10% -10%, rgba(59,130,246,.25), transparent),
+                   radial-gradient(1200px 400px at 110% 10%, rgba(34,211,238,.25), transparent);border-radius:var(--radius);box-shadow:var(--shadow);padding:36px}
+    .hero h2{font-size:32px;margin:0 0 8px}
+    .hero p{color:var(--muted);margin:0 0 16px}
+    .cta{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:12px 16px;border:1px solid #1f2a44;background:#0b1327;color:#e2e8f0}
+    .btn.primary{background:linear-gradient(180deg,#2563eb,#1d4ed8);border-color:#1d4ed8}
+    .btn.install{background:linear-gradient(180deg,#22d3ee,#06b6d4);border-color:#06b6d4}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:22px}
+    .card{grid-column:span 12;background:linear-gradient(180deg,#0f172a,#0b1327);border:1px solid #1f2a44;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    @media(min-width:720px){.card{grid-column:span 6}}
+    @media(min-width:1024px){.card{grid-column:span 4}}
+    .card h3{margin:0 0 6px}
+    .card p{margin:0 0 12px;color:var(--muted)}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;border:1px solid #233151;background:#0a1327;color:#93c5fd;font-size:12px}
+    .footer{opacity:.8;margin-top:28px;font-size:14px}
+    .notice{font-size:12px;color:#9ca3af;margin-top:8px}
+    /* Section headings */
+    section{margin-top:34px}
+    section h2{font-size:22px;margin:0 0 10px}
+    /* Simple modal (for inline tools later) */
+    dialog{border:none;border-radius:16px;box-shadow:var(--shadow);background:#0b1327;color:var(--text);max-width:800px;width:92%}
+    dialog::backdrop{background:rgba(2,6,23,.6)}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid #1f2a44}
+    .modal-body{padding:16px}
+    .chip{font-size:12px;border:1px dashed #334155;color:#cbd5e1;padding:3px 8px;border-radius:999px}
+    code.inline{background:#0b1222;border:1px solid #1e293b;padding:2px 6px;border-radius:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>Pilotentraining</h1>
+      </div>
+      <nav aria-label="Hauptnavigation">
+        <a href="#assessment">Assessment</a>
+        <a href="#tools">Pilotentools</a>
+        <a href="#infos">Infos</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Intro">
+        <h2>Assessment üben. Flugbetrieb vereinfachen.</h2>
+        <p>Eine schlanke Startseite von Laurin & Bernadette: Übungsmodule für angehende Piloten, plus Tools & Helferlein für den Alltag im Cockpit.</p>
+        <div class="cta">
+          <a class="btn primary" href="#assessment">Zu den Assessment-Modulen</a>
+          <a class="btn" href="#tools">Zu den Pilotentools</a>
+          <button id="installBtn" class="btn install" hidden>App installieren</button>
+        </div>
+        <p class="notice">Offlinefähig: Beim ersten Besuch werden Inhalte zwischengespeichert. <span class="chip">PWA</span></p>
+      </section>
+
+      <section id="assessment">
+        <h2>Assessment-Module</h2>
+        <div class="grid">
+          <article class="card" aria-labelledby="mod1">
+            <div class="pill">Quiz • offlinefähig</div>
+            <h3 id="mod1">Cognitive & Psychometric Trainer</h3>
+            <p>Reaktionszeit, Arbeitsgedächtnis, räumliches Denken. Mit anpassbaren Übungssets und Auswertungen (lokal gespeichert).</p>
+            <div class="cta">
+              <button class="btn" data-open-modal="cog">Im Fenster öffnen</button>
+              <a class="btn" href="modules/cog-trainer/index.html">Vollbild</a>
+            </div>
+          </article>
+          <article class="card" aria-labelledby="mod2">
+            <div class="pill">Math/Physics • offlinefähig</div>
+            <h3 id="mod2">Aeronautical Basics</h3>
+            <p>Kopfrechnen, Einheiten, simple Aero-Physik – mit Timer und Schwierigkeitsstufen.</p>
+            <a class="btn" href="modules/aero-basics/index.html">Starten</a>
+          </article>
+          <article class="card" aria-labelledby="mod3">
+            <div class="pill">Interview</div>
+            <h3 id="mod3">HR/Interview Coach</h3>
+            <p>Fragenkataloge, STAR-Methode, Recording-Hinweise. Export/Import als JSON.</p>
+            <a class="btn" href="modules/hr-coach/index.html">Starten</a>
+          </article>
+        </div>
+      </section>
+
+      <section id="tools">
+        <h2>Pilotentools</h2>
+        <div class="grid">
+          <article class="card" aria-labelledby="tool1">
+            <div class="pill">Calculator • offlinefähig</div>
+            <h3 id="tool1">W&B Rechner</h3>
+            <p>Gewicht & Schwerpunktberechnung (Generisch). Speicherung der Flugzeug-Profile lokal.</p>
+            <a class="btn" href="tools/wb/index.html">Öffnen</a>
+          </article>
+          <article class="card" aria-labelledby="tool2">
+            <div class="pill">Regeln</div>
+            <h3 id="tool2">EASA QuickRef</h3>
+            <p>Schnellzugriff auf häufige NCO/OPS-Referenzen. (Hinweis: keine operative Freigabe)</p>
+            <a class="btn" href="tools/easa-quickref/index.html">Öffnen</a>
+          </article>
+          <article class="card" aria-labelledby="tool3">
+            <div class="pill">Zeit</div>
+            <h3 id="tool3">Duty Time Helper</h3>
+            <p>Einfache Planungs-Helfer für Ruhe-/Dienstzeiten. Regeln konfigurierbar pro Operator.</p>
+            <a class="btn" href="tools/duty/index.html">Öffnen</a>
+          </article>
+          <article class="card" aria-labelledby="tool4">
+            <div class="pill">Daten</div>
+            <h3 id="tool4">Logbook Tools</h3>
+            <p>CSV/Excel Import, Summen, Filter – alles lokal im Browser verarbeitet.</p>
+            <a class="btn" href="tools/logbook/index.html">Öffnen</a>
+          </article>
+          <article class="card" aria-labelledby="tool5">
+            <div class="pill">Konverter</div>
+            <h3 id="tool5">Einheiten & TAS/GS</h3>
+            <p>Umrechnungen, TAS/GS schnellrechner – auch offline verfügbar.</p>
+            <a class="btn" href="tools/converters/index.html">Öffnen</a>
+          </article>
+        </div>
+        <p class="notice">Datenschutz: Alle lokalen Tools speichern nur in deinem Browser (IndexedDB/LocalStorage). Nichts wird ohne deine Aktion hochgeladen.</p>
+      </section>
+
+      <section id="infos">
+        <h2>Hinweise</h2>
+        <div class="card">
+          <ul>
+            <li><strong>Offline-Nutzung:</strong> Seite einmal öffnen → wird automatisch gecached. Updates erfolgen beim nächsten Online-Besuch.</li>
+            <li><strong>Export/Import:</strong> Fortschritte & Einstellungen als <code class="inline">.json</code> exportierbar – ideal für Backups.</li>
+            <li><strong>Haftungsausschluss:</strong> Tools sind Lern-/Planungshilfen und keine Quelle für operative Freigaben.</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        © <span id="year"></span> Laurin & Bernadette • <a href="#">Impressum</a> • <a href="#">Datenschutz</a>
+      </footer>
+    </main>
+
+    <!-- Inline Modal skeleton for embedding a tool without leaving the page -->
+    <dialog id="modal">
+      <div class="modal-head">
+        <strong id="modalTitle">Modul</strong>
+        <button class="btn" id="closeModal">Schließen</button>
+      </div>
+      <div class="modal-body">
+        <iframe id="modalFrame" title="Embedded Tool" style="width:100%;height:60vh;border:none;border-radius:12px;background:#0a1222"></iframe>
+      </div>
+    </dialog>
+  </div>
+
+  <script>
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Simple modal handling for inline tools
+    const modal = document.getElementById('modal');
+    const closeModal = document.getElementById('closeModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalFrame = document.getElementById('modalFrame');
+    document.querySelectorAll('[data-open-modal]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const key = btn.getAttribute('data-open-modal');
+        const map = { cog: 'modules/cog-trainer/index.html' };
+        modalTitle.textContent = btn.closest('.card').querySelector('h3').textContent;
+        modalFrame.src = map[key] || '#';
+        modal.showModal();
+      });
+    });
+    closeModal.addEventListener('click',()=>modal.close());
+
+    // PWA install prompt
+    let deferredPrompt; const installBtn = document.getElementById('installBtn');
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault(); deferredPrompt = e; installBtn.hidden = false;
+    });
+    installBtn?.addEventListener('click', async () => {
+      if (!deferredPrompt) return; deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice; deferredPrompt = null; installBtn.hidden = true;
+      console.log('Install outcome:', outcome);
+    });
+
+    // Register the service worker for offline support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', ()=>{
+        navigator.serviceWorker.register('./sw.js').catch(console.error);
+      });
+    }
+  </script>
+</body>
+</html>
+
+<!-- ======================== manifest.json (create this file alongside index.html) ========================
+{
+  "name": "Pilotentraining – Assessment & Tools",
+  "short_name": "Pilotentraining",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#0f172a",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
+-->
+
+<!-- ======================== sw.js (create this file alongside index.html) ========================
+const CACHE_NAME = 'pilotentraining-v1';
+const OFFLINE_URLS = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  // Add minimal critical assets & the root of core modules/tools you want offline
+  '/modules/cog-trainer/',
+  '/tools/wb/',
+];
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(OFFLINE_URLS))
+  );
+});
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then(keys => Promise.all(
+      keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+    ))
+  );
+});
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  if (request.method !== 'GET') return;
+  event.respondWith(
+    caches.match(request).then((cached) =>
+      cached || fetch(request).then((resp) => {
+        const copy = resp.clone();
+        // cache-as-you-go for same-origin GETs
+        if (request.url.startsWith(self.location.origin)) {
+          caches.open(CACHE_NAME).then(c => c.put(request, copy)).catch(()=>{});
+        }
+        return resp;
+      }).catch(() => caches.match('/index.html'))
+    )
+  );
+});
+-->
